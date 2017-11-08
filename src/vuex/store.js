@@ -14,9 +14,21 @@ let store = new Vuex.Store({
       username: null,
       jwtoken: null,
       isLoggedIn: false
+    },
+    posts: null
+  },
+  getters: {
+    getPostById (state, getters) {
+      return function (postid) {
+        if (state.posts) return state.posts.find(post => post._id === postid)
+      }
     }
   },
   mutations: {
+    deletePost (state, postid) {
+      const postIdx = state.posts.findIndex(post => post._id === postid)
+      state.posts.splice(postIdx, 1)
+    },
     addAllPostsToStore (state, posts) {
       state.posts = posts
     },
@@ -39,6 +51,41 @@ let store = new Vuex.Store({
     }
   },
   actions: {
+    editPost (context, payload) {
+      return new Promise((resolve, reject) => {
+        http.put(`/post/${payload.postid}`, payload.post, {headers: {'jwtoken': context.state.user.jwtoken}})
+        .then(response => {
+          location.reload()
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
+    },
+    deletePost (context, postid) {
+      return new Promise((resolve, reject) => {
+        http.delete(`/post/${postid}`, {headers: {'jwtoken': context.state.user.jwtoken}})
+        .then(response => {
+          context.commit('deletePost', postid)
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
+    },
+    createPost (context, post) {
+      return new Promise((resolve, reject) => {
+        http.post('/post', post, {headers: {'jwtoken': context.state.user.jwtoken}})
+        .then(response => {
+          location.reload()
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
+    },
     getAllPosts (context) {
       return new Promise((resolve, reject) => {
         http.get('/post')
