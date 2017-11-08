@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Toolbar/>
-    <router-view/>
+    <div id="main-container">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -20,5 +22,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+#main-container {
+  padding: 16px;
 }
 </style>

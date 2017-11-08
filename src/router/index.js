@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from './../vuex/store'
 import Home from '@/components/Home'
+import PostDetails from '@/components/PostDetails'
 import Signin from '@/components/Signin'
 import Signup from '@/components/Signup'
 
@@ -16,6 +17,10 @@ let router = new Router({
     {
       path: '/',
       component: Home
+    },
+    {
+      path: '/post/:id',
+      component: PostDetails
     },
     {
       path: '/signin',
