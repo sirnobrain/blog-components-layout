@@ -17,5 +17,11 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created () {
+    if (localStorage.getItem('jwtoken::blog')) {
+      this.$store.commit('setUserAndSaveToken', localStorage.getItem('jwtoken::blog'))
+    }
+    this.$store.dispatch('getAllPosts')
+  }
 })
