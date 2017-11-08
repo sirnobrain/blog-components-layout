@@ -4,6 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './vuex/store'
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.css'
+
+Vue.use(VueMaterial)
 
 Vue.config.productionTip = false
 
@@ -13,5 +17,11 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created () {
+    if (localStorage.getItem('jwtoken::blog')) {
+      this.$store.commit('setUserAndSaveToken', localStorage.getItem('jwtoken::blog'))
+    }
+    this.$store.dispatch('getAllPosts')
+  }
 })
